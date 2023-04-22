@@ -82,6 +82,7 @@ class Player(
         val item = inventory.getItem(itemIndex)
         if(item != null){
             resources += item.cost / 2
+            println("Sold ${item.name} for ${item.cost / 2}. Resources remaining $resources.")
             inventory.removeItem(itemIndex)
         }
     }
