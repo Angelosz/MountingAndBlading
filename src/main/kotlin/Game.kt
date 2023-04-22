@@ -71,6 +71,8 @@ class Game(private val board: Board, private val player: Player) {
       onBoardActions[prompt?.first()]?.run { this(prompt) } ?: println("what?")
 
       if(player.health < 1) {
+        board.placePlayerCorpse()
+        displayBoard()
         println("You are dead :(.")
         gameState = Stopped
       }
@@ -111,7 +113,7 @@ class Game(private val board: Board, private val player: Player) {
         is EnemyPiece -> {
           println("Combat Starting!")
           startCombat(piece)
-          mapSlot.piece = EmptyPiece()
+          if(piece.health < 1) mapSlot.piece = EmptyPiece()
         }
         is PlayerPiece -> println("how did you do that?")
         is TreePiece -> println("You hit a tree!")
@@ -119,7 +121,7 @@ class Game(private val board: Board, private val player: Player) {
           println("You visit a town.")
           visitTown(piece)
         }
-        is CorpsePiece -> println("ugh, a corpse..")
+        is CorpsePiece -> println("ugh...")
       }
     }
   }
