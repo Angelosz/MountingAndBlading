@@ -139,26 +139,7 @@ class Game(private val board: Board, private val player: Player) {
   }
 
   private fun lookAt(direction: Direction){
-    val playerNextPosition = Player.calculateNextPosition(direction)
-    val mapSlot = board.getMapSlotAt(playerNextPosition)
-    if(mapSlot != null){
-      when(val piece = mapSlot.piece){
-        is ChestPiece -> {
-          println("A chest! It could be a boat!")
-        }
-        is EmptyPiece -> {
-          println("Empty. You can move there!")
-        }
-        is EnemyPiece -> {
-          println("Danger! Enemy ahead.")
-          println(piece.displayInfo())
-        }
-        is PlayerPiece -> println("how did you do that?")
-        is TreePiece -> println("Just a tree...")
-        is TownPiece -> println("Visit town?")
-        is CorpsePiece -> println("ugh, a corpse..")
-      }
-    }
+    println(board.getMapSlotAt(Player.calculateNextPosition(direction))?.piece?.info)
   }
 
   private fun startCombat(enemy: EnemyPiece) {
