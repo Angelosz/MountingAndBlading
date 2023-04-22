@@ -1,4 +1,5 @@
 import Direction.*
+import GameState.*
 import board.Board
 import board.piece.*
 
@@ -13,35 +14,65 @@ val inputToDirection: Map<String, Direction> = mapOf(
         "d" to Right,
 )
 
+enum class GameState(){
+  OnBoard, InTown, Stopped
+}
+
 class Game(private val board: Board, private val player: Player) {
+  private var gameState = OnBoard
+
+  private val onBoardActions: Map<String, (List<String>?) -> Unit> = mapOf(
+    "character" to { player.displayInformation() },
+    "w" to {playerMovesTo(Up)}, "a" to {playerMovesTo(Left)},
+    "s" to {playerMovesTo(Down)}, "d" to {playerMovesTo(Right)},
+    "use" to {prompt ->
+      val itemIndex = prompt?.getOrNull(1)?.toIntOrNull()
+      if(itemIndex != null) player.useItem(itemIndex)
+      else println("use what? (use x)")
+    },
+    "info" to { prompt ->
+      inputToDirection[prompt?.get(1)]?.let { lookAt(it) }
+    },
+    "exit" to {
+      println(":(")
+      gameState = Stopped
+    }
+  )
+  private val inTownActions: Map<String, (List<String>?, TownPiece) -> Unit> = mapOf(
+    "shop" to { _, town ->
+      println(town.shop.display())
+    },
+    "buy" to { prompt, town ->
+      val itemIndex = prompt?.getOrNull(1)?.toIntOrNull()
+      if( itemIndex != null ) town.buyItem(itemIndex, player)
+      else println("buy what? (buy x)")
+    },
+    "sell" to { prompt, _ ->
+      val itemIndex = prompt?.getOrNull(1)?.toIntOrNull()
+      if( itemIndex != null ) player.sellItem(itemIndex)
+      else println("sell what? (sell x)")
+    },
+    "potion" to { _, town ->
+      town.buyPotion(player)
+    },
+    "leave" to { _, _ ->
+      println("Leaving town.")
+      gameState = OnBoard
+    }
+  )
 
   fun play() {
     println("*P* = Player; *E* = Enemy; [º] = Chest; <-> = Town; T = Tree")
     displayActions()
-    while(true){
+
+    while(gameState != Stopped){
       displayBoard()
-      val prompt = readlnOrNull()?.trim()?.split(' ')
-      when(prompt?.first()){
-        "character" -> player.displayInformation()
-        "a", "w", "s", "d" -> inputToDirection[prompt.first()]?.let { playerMovesTo(it) }
-        "use" -> {
-          val itemIndex = prompt.getOrNull(1)?.toIntOrNull()
-          if(itemIndex != null) player.useItem(itemIndex)
-          else println("use what? (use x)")
-        }
-        "info" -> {
-          inputToDirection[prompt[1]]?.let { lookAt(it) }
-        }
-        "exit" -> {
-          println(":(")
-          break
-        }
-        else -> println("what?")
-      }
+      val prompt = readlnOrNull()?.trim()?.split(' ', limit = 2)
+      onBoardActions[prompt?.first()]?.run { this(prompt) } ?: println("what?")
+
       if(player.health < 1) {
         println("You are dead :(.")
-        board.placePlayerCorpse()
-        break
+        gameState = Stopped
       }
     }
   }
@@ -59,6 +90,10 @@ class Game(private val board: Board, private val player: Player) {
   }
 
   private fun playerMovesTo(direction: Direction){
+    if(gameState != OnBoard){
+      println("Can't do that right now!")
+      return
+    }
     val playerNextPosition = Player.calculateNextPosition(direction)
     val mapSlot = board.getMapSlotAt(playerNextPosition)
     if(mapSlot != null){
@@ -91,28 +126,13 @@ class Game(private val board: Board, private val player: Player) {
 
   private fun visitTown(town: TownPiece) {
     town.displayActions()
-    while(true){
+    gameState = InTown
+
+    while(gameState == InTown){
       val prompt = readlnOrNull()?.trim()?.split(' ', limit = 2)
-      when(prompt?.first()){
-        "shop" -> println(town.shop.display())
-        "buy" -> {
-          val itemIndex = prompt.getOrNull(1)?.toIntOrNull()
-          if(itemIndex != null) town.buyItem(itemIndex, player)
-          else println("buy what? (buy x)")
-        }
-        "sell" -> {
-          val itemIndex = prompt.getOrNull(1)?.toIntOrNull()
-          if(itemIndex != null) player.sellItem(itemIndex)
-          else println("sell what? (sell x)")
-        }
-        "potion" -> town.buyPotion(player)
-        "leave" -> {
-          println("Leaving town.")
-          break
-        }
-        "character" -> player.displayInformation()
-        else -> println("what?")
-      }
+      inTownActions[prompt?.first()]?.run { this(prompt, town)}
+        ?: onBoardActions[prompt?.first()]?.run { this(prompt) }
+        ?: println("what?")
     }
   }
 
