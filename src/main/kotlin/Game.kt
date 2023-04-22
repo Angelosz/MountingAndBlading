@@ -127,7 +127,7 @@ class Game(private val board: Board, private val player: Player) {
   }
 
   private fun visitTown(town: TownPiece) {
-    town.displayActions()
+    town.displayTownActions()
     gameState = InTown
 
     while(gameState == InTown){
