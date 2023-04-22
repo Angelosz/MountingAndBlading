@@ -29,10 +29,9 @@ class Player(
 
 
     fun calculateDamage(): Int = damage + weapon.damage
-    private fun calculateDefense(): Int = defense + armor.defense
+    fun calculateDefense(): Int = defense + armor.defense
 
     fun getLoot(loot: Loot) {
-        println(loot.display())
         resources += loot.resources
         inventory.addItems(loot.items)
     }
@@ -65,13 +64,9 @@ class Player(
     }
 
     fun damagedBy(incomingDamage: Int) {
-        val actualDamage = calculateDamageAfterDefense(defense + armor.defense, incomingDamage)
-        health -= actualDamage
-        println("You are hit for $actualDamage. $health health remaining!")
-    }
+        health -= incomingDamage
 
-    private fun calculateDamageAfterDefense(actualDefense: Int, incomingDamage: Int) =
-            if (actualDefense >= incomingDamage) 1 else incomingDamage - actualDefense
+    }
 
     fun bought(item: Item) {
         resources -= item.cost
@@ -82,6 +77,7 @@ class Player(
         val item = inventory.getItem(itemIndex)
         if(item != null){
             resources += item.cost / 2
+            println("Sold ${item.name} for ${item.cost / 2}. Resources remaining $resources.")
             inventory.removeItem(itemIndex)
         }
     }
