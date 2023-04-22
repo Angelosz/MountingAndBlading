@@ -64,13 +64,9 @@ class Player(
     }
 
     fun damagedBy(incomingDamage: Int) {
-        val actualDamage = calculateDamageAfterDefense(defense + armor.defense, incomingDamage)
-        health -= actualDamage
-        println("You are hit for $actualDamage. $health health remaining!")
-    }
+        health -= incomingDamage
 
-    private fun calculateDamageAfterDefense(actualDefense: Int, incomingDamage: Int) =
-            if (actualDefense >= incomingDamage) 1 else incomingDamage - actualDefense
+    }
 
     fun bought(item: Item) {
         resources -= item.cost

@@ -33,16 +33,13 @@ open class EnemyPiece(val loot: Loot = Loot()): Piece {
   open var health = 12
   open val defense = 1
   fun damagedBy(incomingDamage: Int) {
-    val actualDamage = if ( defense > incomingDamage ) 1 else incomingDamage - defense
-    health -= actualDamage
-    println("You hit the enemy for $actualDamage. $health health remaining!")
-    if(health < 1) println("You have defeated the enemy! Have some loot!")
+    health -= incomingDamage
   }
 
   fun displayInfo(): String {
     return "Health: $health\n" +
-            "Damage: $damage\n" +
-            "Defense: $defense"
+           "Damage: $damage\n" +
+           "Defense: $defense"
   }
   override val display: String = "*E*"
   override val info: String = "Danger! Enemy ahead.\n ${displayInfo()}"

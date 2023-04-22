@@ -2,6 +2,7 @@ import Direction.*
 import GameState.*
 import board.Board
 import board.piece.*
+import combat.Combat
 
 enum class Direction(val position: Pair<Int, Int>){
   Up(Pair(-1, 0)), Down(Pair(1, 0)), Left(Pair(0, -1)), Right(Pair(0, 1))
@@ -194,14 +195,10 @@ class Game(private val board: Board, private val player: Player) {
   }
 
   private fun startCombat(enemy: EnemyPiece) {
-    while(player.health > 0){
-      enemy.damagedBy(player.calculateDamage())
-      if(enemy.health < 1) {
-        player.getLoot(enemy.loot)
-        break
-      }
-      player.damagedBy(enemy.damage)
-    }
+    Combat(enemy, player).start()
+
   }
 }
+
+
 
