@@ -98,7 +98,10 @@ class TownPiece: Piece{
 
   fun buyPotion(player: Player) {
     val potion = HealingPotion("Healing Potion", 25, 5)
-    if(player.resources >= potion.cost) player.bought(potion)
+    if(player.resources >= potion.cost) {
+      player.bought(potion)
+      println("You bought a potion for ${potion.cost}. Remaining resources: ${player.resources}")
+    }
   }
 
   override val display = "<->"
