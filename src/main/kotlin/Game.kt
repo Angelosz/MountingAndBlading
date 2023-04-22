@@ -123,7 +123,6 @@ class Game(private val board: Board, private val player: Player) {
 
   private fun startCombat(enemy: EnemyPiece) {
     Combat(enemy, player).start()
-
   }
 }
 

@@ -15,6 +15,6 @@ class CombatDisplay(private val enemy: EnemyPiece, private val player: Player) {
   }
 
     fun enemyDamagesPlayerBy(damage: Int) {
-    println("You are hit for $damage. $player.health health remaining!")  }
+    println("You are hit for $damage. ${player.health} health remaining!")  }
 
 }

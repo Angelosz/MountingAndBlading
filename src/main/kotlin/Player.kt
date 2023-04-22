@@ -29,7 +29,7 @@ class Player(
 
 
     fun calculateDamage(): Int = damage + weapon.damage
-    private fun calculateDefense(): Int = defense + armor.defense
+    fun calculateDefense(): Int = defense + armor.defense
 
     fun getLoot(loot: Loot) {
         resources += loot.resources

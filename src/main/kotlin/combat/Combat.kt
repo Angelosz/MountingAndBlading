@@ -21,16 +21,16 @@ class Combat(private val enemy: EnemyPiece, private val player: Player) {
   private fun enemyDied() = enemy.health < 1
 
   private fun enemyAttacks() {
-    val damage = calculateDamage(enemy.damage, player.defense)
+    val damage = calculateDamage(enemy.damage, player.calculateDefense())
     player.damagedBy(damage)
     display.enemyDamagesPlayerBy(damage)
   }
 
   private fun playerAttacks() {
-    val damage = calculateDamage(player.damage, enemy.defense)
+    val damage = calculateDamage(player.calculateDamage(), enemy.defense)
     enemy.damagedBy(damage)
     display.playerDamagesEnemyBy(damage)
   }
 
-  private fun calculateDamage(damage: Int, defense: Int) = if( defense > damage ) 1 else damage - defense
+  private fun calculateDamage(damage: Int, defense: Int) = if( defense >= damage ) 1 else damage - defense
 }

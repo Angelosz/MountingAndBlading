@@ -41,8 +41,10 @@ open class EnemyPiece(val loot: Loot = Loot()): Piece {
            "Damage: $damage\n" +
            "Defense: $defense"
   }
+
   override val display: String = "*E*"
-  override val info: String = "Danger! Enemy ahead.\n ${displayInfo()}"
+  override val info: String
+    get() = "Danger! Enemy ahead.\n ${displayInfo()}"
 }
 
 class BossPiece: EnemyPiece(){
