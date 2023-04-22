@@ -140,10 +140,14 @@ class Game(private val board: Board, private val player: Player) {
   }
 
   private fun startCombat(enemy: EnemyPiece) {
-    while(player.health > 0 && enemy.health > 0){
+    while(player.health > 0){
       enemy.damagedBy(player.calculateDamage())
-      if(enemy.health > 0) player.damagedBy(enemy.damage)
+      if(enemy.health < 1) {
+        player.getLoot(enemy.loot)
+        break
+      }
+      player.damagedBy(enemy.damage)
     }
-    if( player.health > 0 ) player.getLoot(enemy.loot)
   }
 }
+
