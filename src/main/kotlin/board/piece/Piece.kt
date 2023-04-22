@@ -70,14 +70,6 @@ class TownPiece: Piece{
     ))
   }
 
-  fun displayTownActions() {
-    println("'shop' Look shop.\n" +
-            "'buy x' where x is the slot id.\n" +
-            "'sell x' where x is the inventory slot. Sells item at 1/2 cost.\n" +
-            "'potion' to buy a potion(25 resources.)\n" +
-            "'leave' to leave town.")
-  }
-
   fun buyItem(itemId: Int, player: Player) {
     val item = shop.getItem(itemId) ?: return
     if(player.resources >= item.cost){

@@ -32,7 +32,6 @@ class Player(
     private fun calculateDefense(): Int = defense + armor.defense
 
     fun getLoot(loot: Loot) {
-        println(loot.display())
         resources += loot.resources
         inventory.addItems(loot.items)
     }
