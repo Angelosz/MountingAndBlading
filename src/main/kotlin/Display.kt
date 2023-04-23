@@ -1,6 +1,5 @@
 import board.Board
 import board.piece.ChestPiece
-import board.piece.EnemyPiece
 import board.piece.Piece
 import board.piece.TownPiece
 
