@@ -1,35 +1,14 @@
 import character.*
 
-class Player(
-        var resources: Int,
-        val inventory: Inventory,
-        var weapon: Weapon,
-        var armor: Armor,
-        var health: Int = 20,
-        val damage: Int = 2,
-        val defense: Int = 1,) {
+
+class Player( val character: Character ): CharacterInterface by character {
+
+
+    val display = CharacterDisplay(character)
 
     fun displayInformation() {
-        println("Your Character:")
-        println(displayCharacterStats())
-        println(displayResources())
-        println(displayEquipment())
-        println(displayInventory())
+        display.characterInformation()
     }
-
-    private fun displayCharacterStats(): String =
-            "Health: $health\n" +
-            "Damage: ${calculateDamage()}\n" +
-            "Defense: ${calculateDefense()}"
-
-
-    fun displayResources(): String = "Resources: $resources"
-    fun displayEquipment(): String = "Weapon: ${weapon.display()}\nArmor: ${armor.display()}"
-    fun displayInventory(): String = "Inventory:\n ${inventory.display()}"
-
-
-    fun calculateDamage(): Int = damage + weapon.damage
-    fun calculateDefense(): Int = defense + armor.defense
 
     fun getLoot(loot: Loot) {
         resources += loot.resources
@@ -43,20 +22,20 @@ class Player(
                 is Weapon -> {
                     inventory.putItemIn(slot, weapon)
                     weapon = item
-                    println("Equipped ${weapon.name}")
+                    display.equippedWeapon()
                 }
                 is Armor -> {
                     inventory.putItemIn(slot, armor)
                     armor = item
-                    println("Equipped ${armor.name}")
+                    display.equippedArmor()
                 }
                 is Consumable ->{
                     item.useOn(this)
-                    println("Used item ${item.name}")
+                    display.used(item)
                     inventory.removeItem(slot)
                 }
             }
-        } else println("Item not found.")
+        } else display.itemNotFound()
     }
 
     fun modifyHealthBy(amount: Int) {
@@ -65,7 +44,6 @@ class Player(
 
     fun damagedBy(incomingDamage: Int) {
         health -= incomingDamage
-
     }
 
     fun bought(item: Item) {
@@ -77,7 +55,7 @@ class Player(
         val item = inventory.getItem(itemIndex)
         if(item != null){
             resources += item.cost / 2
-            println("Sold ${item.name} for ${item.cost / 2}. Resources remaining $resources.")
+            display.sold(item)
             inventory.removeItem(itemIndex)
         }
     }

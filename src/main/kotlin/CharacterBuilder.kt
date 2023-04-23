@@ -1,4 +1,5 @@
 import character.Armor
+import character.Character
 import character.Inventory
 import character.Weapon
 
@@ -10,10 +11,12 @@ object CharacterBuilder {
 
     private fun buildStarterCharacter(): Player {
         return Player(
+            Character(
                 100,
                 Inventory(),
                 Weapon("Wooden Sword", 20, 2),
                 Armor("Wood?", 20, 1)
+            )
         )
     }
 }

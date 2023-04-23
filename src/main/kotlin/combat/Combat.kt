@@ -8,7 +8,7 @@ class Combat(private val enemy: EnemyPiece, private val player: Player) {
   private val display = CombatDisplay(enemy, player)
   fun start(){
     display.startOfCombat()
-    while(player.health > 0){
+    while(player.isAlive){
       playerAttacks()
       if(enemyDied()) {
         display.enemyDefeated(enemy.loot)

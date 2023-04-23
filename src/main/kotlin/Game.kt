@@ -72,7 +72,7 @@ class Game(private val board: Board, private val player: Player) {
       onBoardActions[prompt?.first()]?.run { this(prompt) }
         ?: display.invalidCommandMessage()
 
-      if(player.health < 1) {
+      if(player.isDead) {
         board.placePlayerCorpse()
         display.playerDeath()
         gameState = Stopped
