@@ -30,9 +30,8 @@ class Game(private val board: Board, private val player: Player) {
     "s" to { playerMovesTo(Player.nextPosition(Down)) },
     "d" to { playerMovesTo(Player.nextPosition(Right)) },
     "use" to { prompt ->
-      val itemIndex = prompt?.getOrNull(1)?.toIntOrNull()
-      if(itemIndex != null) player.useItem(itemIndex)
-      else display.message("use what? (use x)")
+        prompt?.getOrNull(1)?.toIntOrNull()?.let { player.useItem(it) }
+          ?: display.message("use what? (use x)")
     },
     "info" to { prompt ->
       inputToDirection[prompt?.get(1)]?.let { direction -> display.infoAt(direction) }
