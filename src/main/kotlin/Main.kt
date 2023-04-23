@@ -1,5 +1,5 @@
 
 fun main(args: Array<String>) {
-  val game = GameLoader.loadGame()
+  val game = GameLoader.newGame()
   game.play()
 }
