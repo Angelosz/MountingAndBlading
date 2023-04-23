@@ -16,7 +16,7 @@ val inputToDirection: Map<String, Direction> = mapOf(
 )
 
 enum class GameState(){
-  OnBoard, InTown, Stopped
+  OnBoard, InTown, Ended
 }
 
 class Game(private val board: Board, private val player: Player) {
@@ -39,7 +39,7 @@ class Game(private val board: Board, private val player: Player) {
     },
     "exit" to {
       display.exitMessage()
-      gameState = Stopped
+      gameState = Ended
     }
   )
   private val inTownActions: Map<String, (List<String>?, TownPiece) -> Unit> = mapOf(
@@ -66,16 +66,16 @@ class Game(private val board: Board, private val player: Player) {
   fun play() {
     display.gameStartMessage()
 
-    while(gameState != Stopped){
+    while(gameState != Ended){
       display.boardMap()
-      val prompt = readlnOrNull()?.trim()?.split(' ', limit = 2)
+      val prompt = readlnOrNull()?.trim()?.split(' ', limit = 3)
       onBoardActions[prompt?.first()]?.run { this(prompt) }
         ?: display.invalidCommandMessage()
 
       if(player.isDead) {
         board.placePlayerCorpse()
         display.playerDeath()
-        gameState = Stopped
+        gameState = Ended
       }
     }
   }
