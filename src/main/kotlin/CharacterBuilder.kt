@@ -4,7 +4,7 @@ import character.Weapon
 
 object CharacterBuilder {
     fun build(): Player {
-      Player.changePosition(Pair(2, 1))
+      Player.updatePosition(Pair(2, 1))
       return buildStarterCharacter()
     }
 
