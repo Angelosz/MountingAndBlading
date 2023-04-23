@@ -60,12 +60,8 @@ class Display(private val board: Board) {
     fun lootedChest(chest: ChestPiece) {
     println("You found some shinies!\n ${chest.loot.display()}")  }
 
-    fun startedCombatWith(enemy: EnemyPiece) {
-    println("combat.Combat Starting!\n ${enemy.displayInfo()}")
-  }
-
-    fun infoOf(piece: Piece) {
-    println(piece.info)
+    fun infoOf(piece: Piece?) {
+    println(piece?.info)
   }
 
     fun failedToBuyMessage() {

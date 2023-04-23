@@ -88,7 +88,7 @@ class Player(
     val position
       get() = Pair(row, column)
 
-    fun changePosition(position: Pair<Int, Int>){
+    fun updatePosition(position: Pair<Int, Int>){
       row = position.first
       column = position.second
     }

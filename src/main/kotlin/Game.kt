@@ -25,8 +25,10 @@ class Game(private val board: Board, private val player: Player) {
 
   private val onBoardActions: Map<String, (List<String>?) -> Unit> = mapOf(
     "character" to { player.displayInformation() },
-    "w" to { playerMovesTo(Up) }, "a" to { playerMovesTo(Left) },
-    "s" to { playerMovesTo(Down) }, "d" to { playerMovesTo(Right) },
+    "w" to { playerMovesTo(Player.calculateNextPosition(Up)) },
+    "a" to { playerMovesTo(Player.calculateNextPosition(Left)) },
+    "s" to { playerMovesTo(Player.calculateNextPosition(Down)) },
+    "d" to { playerMovesTo(Player.calculateNextPosition(Right)) },
     "use" to { prompt ->
       val itemIndex = prompt?.getOrNull(1)?.toIntOrNull()
       if(itemIndex != null) player.useItem(itemIndex)
@@ -78,34 +80,31 @@ class Game(private val board: Board, private val player: Player) {
     }
   }
 
-  private fun playerMovesTo(direction: Direction){
+  private fun playerMovesTo(playerNextPosition: Pair<Int, Int>){
     if(gameState != OnBoard){
       display.message("Can't do that right now!")
       return
     }
-    val playerNextPosition = Player.calculateNextPosition(direction)
+
     val mapSlot = board.getMapSlotAt(playerNextPosition)
-    if(mapSlot != null){
-      when(val piece = mapSlot.piece){
-        is ChestPiece -> {
-          display.lootedChest(piece)
-          player.getLoot(piece.loot)
-          mapSlot.piece = EmptyPiece()
-        }
-        is EmptyPiece -> {
-          board.movePieceFromTo(Player.position, playerNextPosition)
-          Player.changePosition(playerNextPosition)
-        }
-        is EnemyPiece -> {
-          display.startedCombatWith(piece)
-          startCombat(piece)
-          if(piece.health < 1) mapSlot.piece = EmptyPiece()
-        }
-        is TownPiece -> {
-          visitTown(piece)
-        }
-        else -> display.infoOf(piece)
+    when(val piece = mapSlot?.piece){
+      is ChestPiece -> {
+        display.lootedChest(piece)
+        player.getLoot(piece.loot)
+        mapSlot.piece = EmptyPiece()
       }
+      is EmptyPiece -> {
+        board.movePieceFromTo(Player.position, playerNextPosition)
+        Player.updatePosition(playerNextPosition)
+      }
+      is EnemyPiece -> {
+        Combat(piece, player).start()
+        if(piece.health < 1) mapSlot.piece = EmptyPiece()
+      }
+      is TownPiece -> {
+        visitTown(piece)
+      }
+      else -> display.infoOf(piece)
     }
   }
 
@@ -119,10 +118,6 @@ class Game(private val board: Board, private val player: Player) {
         ?: onBoardActions[prompt?.first()]?.run { this(prompt) }
         ?: display.invalidCommandMessage()
     }
-  }
-
-  private fun startCombat(enemy: EnemyPiece) {
-    Combat(enemy, player).start()
   }
 }
 
