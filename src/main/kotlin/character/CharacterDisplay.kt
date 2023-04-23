@@ -26,20 +26,16 @@ class CharacterDisplay(val character: CharacterInterface) {
         println("Sold ${item.name} for ${item.cost / 2}. Resources remaining ${character.resources}.")
     }
 
-    fun equippedWeapon() {
-        println("Equipped ${character.weapon.name}")
-    }
-
-    fun equippedArmor() {
-        println("Equipped ${character.armor.name}")
-    }
-
     fun used(item: Item) {
         println("Used item ${item.name}")
     }
 
     fun itemNotFound() {
         println("Item not found!")
+    }
+
+    fun equipped(item: Item) {
+        println("Equipped ${item.name}.")
     }
 
 

@@ -24,7 +24,7 @@ class Game(private val board: Board, private val player: Player) {
   private var gameState = OnBoard
 
   private val onBoardActions: Map<String, (List<String>?) -> Unit> = mapOf(
-    "character" to { player.displayInformation() },
+    "character" to { player.display.characterInformation() },
     "w" to { playerMovesTo(Player.calculateNextPosition(Up)) },
     "a" to { playerMovesTo(Player.calculateNextPosition(Left)) },
     "s" to { playerMovesTo(Player.calculateNextPosition(Down)) },

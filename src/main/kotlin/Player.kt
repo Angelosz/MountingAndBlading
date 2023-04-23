@@ -2,13 +2,7 @@ import character.*
 
 
 class Player( val character: Character ): CharacterInterface by character {
-
-
     val display = CharacterDisplay(character)
-
-    fun displayInformation() {
-        display.characterInformation()
-    }
 
     fun getLoot(loot: Loot) {
         resources += loot.resources
@@ -22,14 +16,14 @@ class Player( val character: Character ): CharacterInterface by character {
                 is Weapon -> {
                     inventory.putItemIn(slot, weapon)
                     weapon = item
-                    display.equippedWeapon()
+                    display.equipped(item)
                 }
                 is Armor -> {
                     inventory.putItemIn(slot, armor)
                     armor = item
-                    display.equippedArmor()
+                    display.equipped(item)
                 }
-                is Consumable ->{
+                is Consumable -> {
                     item.useOn(this)
                     display.used(item)
                     inventory.removeItem(slot)
