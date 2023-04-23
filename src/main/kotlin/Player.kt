@@ -47,7 +47,7 @@ class Player( val character: Character ): CharacterInterface by character {
       column = position.second
     }
 
-    fun calculateNextPosition(direction: Direction): Pair<Int, Int> {
+    fun nextPosition(direction: Direction): Pair<Int, Int> {
       val (nextRow, nextColumn) = direction.position
       return Pair(row + nextRow, column + nextColumn)
     }

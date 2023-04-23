@@ -25,10 +25,10 @@ class Game(private val board: Board, private val player: Player) {
 
   private val onBoardActions: Map<String, (List<String>?) -> Unit> = mapOf(
     "character" to { player.display.characterInformation() },
-    "w" to { playerMovesTo(Player.calculateNextPosition(Up)) },
-    "a" to { playerMovesTo(Player.calculateNextPosition(Left)) },
-    "s" to { playerMovesTo(Player.calculateNextPosition(Down)) },
-    "d" to { playerMovesTo(Player.calculateNextPosition(Right)) },
+    "w" to { playerMovesTo(Player.nextPosition(Up)) },
+    "a" to { playerMovesTo(Player.nextPosition(Left)) },
+    "s" to { playerMovesTo(Player.nextPosition(Down)) },
+    "d" to { playerMovesTo(Player.nextPosition(Right)) },
     "use" to { prompt ->
       val itemIndex = prompt?.getOrNull(1)?.toIntOrNull()
       if(itemIndex != null) player.useItem(itemIndex)

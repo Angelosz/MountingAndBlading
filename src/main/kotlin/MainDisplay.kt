@@ -27,7 +27,7 @@ class MainDisplay(private val board: Board) {
   }
 
   fun infoAt(direction: Direction) {
-    println(board.getMapSlotAt(Player.calculateNextPosition(direction))?.piece?.info)
+    println(board.getMapSlotAt(Player.nextPosition(direction))?.piece?.info)
   }
 
   fun inTownActions() {
