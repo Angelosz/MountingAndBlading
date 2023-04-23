@@ -14,4 +14,22 @@ interface CharacterInterface {
     fun calculateDamage() = damage + weapon.damage
 
     fun calculateDefense()= defense + armor.defense
+
+    fun modifyHealthBy(amount: Int) {
+        health += amount
+    }
+
+    fun damagedBy(incomingDamage: Int) {
+        health -= incomingDamage
+    }
+
+    fun bought(item: Item) {
+        resources -= item.cost
+        inventory.addItem(item)
+    }
+
+    fun getLoot(loot: Loot) {
+        resources += loot.resources
+        inventory.addItems(loot.items)
+    }
 }

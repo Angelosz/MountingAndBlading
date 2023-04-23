@@ -4,11 +4,6 @@ import character.*
 class Player( val character: Character ): CharacterInterface by character {
     val display = CharacterDisplay(character)
 
-    fun getLoot(loot: Loot) {
-        resources += loot.resources
-        inventory.addItems(loot.items)
-    }
-
     fun useItem(slot: Int) {
         val item = inventory.getItem(slot)
         if(item != null) {
@@ -30,19 +25,6 @@ class Player( val character: Character ): CharacterInterface by character {
                 }
             }
         } else display.itemNotFound()
-    }
-
-    fun modifyHealthBy(amount: Int) {
-        health += amount
-    }
-
-    fun damagedBy(incomingDamage: Int) {
-        health -= incomingDamage
-    }
-
-    fun bought(item: Item) {
-        resources -= item.cost
-        inventory.addItem(item)
     }
 
     fun sellItem(itemIndex: Int) {
