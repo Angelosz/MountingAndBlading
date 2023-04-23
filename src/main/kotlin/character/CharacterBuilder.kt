@@ -1,11 +1,10 @@
-import character.Armor
-import character.Character
-import character.Inventory
-import character.Weapon
+package character
+
+import Player
 
 object CharacterBuilder {
     fun build(): Player {
-      Player.updatePosition(Pair(2, 1))
+        Player.updatePosition(Pair(2, 1))
       return buildStarterCharacter()
     }
 

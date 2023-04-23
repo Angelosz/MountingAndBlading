@@ -1,3 +1,5 @@
+import board.BoardBuilder
+import character.CharacterBuilder
 
 object GameLoader {
   fun loadGame(gameId: Int = 0): Game {

@@ -1,5 +1,5 @@
-import board.Board
-import board.MapSlot
+package board
+
 import board.piece.Piece
 import board.piece.PieceBuilder
 
