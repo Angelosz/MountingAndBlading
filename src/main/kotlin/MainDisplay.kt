@@ -3,7 +3,7 @@ import board.piece.ChestPiece
 import board.piece.Piece
 import board.piece.TownPiece
 
-class Display(private val board: Board) {
+class MainDisplay(private val board: Board) {
 
   fun message(message: String){
     println(message)

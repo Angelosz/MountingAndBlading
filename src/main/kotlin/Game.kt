@@ -20,7 +20,7 @@ enum class GameState(){
 }
 
 class Game(private val board: Board, private val player: Player) {
-  private val display = Display(board)
+  private val display = MainDisplay(board)
   private var gameState = OnBoard
 
   private val onBoardActions: Map<String, (List<String>?) -> Unit> = mapOf(
